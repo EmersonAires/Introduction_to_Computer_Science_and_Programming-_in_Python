@@ -151,8 +151,26 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    ########################################################################################
+    #variable assignment
+    letters_guessed = []
+    remaining_letters = string.ascii_lowercase
+    guesses = 6
+    end_of_the_game = False
+
+    ########################################################################################
+    #game presentation
+    print("Welcome to the game Hangman!")
+    print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
+    print("---------------------")
+
+    ########################################################################################
+    
+    while end_of_the_game != True:
+
+        print("You have {} guesses left".format(guesses))
+        print("Avaible letters: ", remaining_letters)
+        break
 
 
 
@@ -232,7 +250,7 @@ def hangman_with_hints(secret_word):
 # these two lines and run this file to test!
 # Hint: You might want to pick your own secret_word while you're testing.
 
-
+'''
 if __name__ == "__main__":
     # pass
 
@@ -241,6 +259,7 @@ if __name__ == "__main__":
     
     secret_word = choose_word(wordlist)
     hangman(secret_word)
+'''
 
 ###############
     
@@ -251,22 +270,24 @@ if __name__ == "__main__":
     #hangman_with_hints(secret_word)
 
 ####################################################################################
-def letters_chosen_by_the_user():
+def letter_chosen_by_the_user():
     '''
     Returns the letters chosen by the user on each attempt
     '''
-    n = 1
-    letters_guessed = []
-    # six letters
-    while n < 7:
-        letters_guessed.append(input("Insert the " + str(n) + "ª letter: "))
-        n += 1
+   
+    letter_guessed = (input("Enter a letter: "))
+        
   
-    return letters_guessed
+    return letter_guessed
 
 
 #is_word_guessed(secret_word, letters_chosen_by_the_user())
 
 #get_guessed_word(secret_word, letters_chosen_by_the_user())
 
-get_available_letters(letters_chosen_by_the_user())
+#get_available_letters(letters_chosen_by_the_user())
+
+#secret_word = choose_word(wordlist)
+
+secret_word = "sucesso"
+hangman(secret_word)
