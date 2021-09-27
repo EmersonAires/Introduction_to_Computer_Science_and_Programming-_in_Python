@@ -188,7 +188,7 @@ def hangman(secret_word):
         print("Avaible letters:", remaining_letters)
 
         #user chooses a letter
-        end_of_the_game, letter, guesses = letter_chosen_by_the_user(end_of_the_game,
+        end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(end_of_the_game,
                                                                      warnings_left,
                                                                      guesses,
                                                                      list_letters_guessed,
@@ -197,6 +197,7 @@ def hangman(secret_word):
         if end_of_the_game:
             print("End of the game")
             break
+
         else:
             list_letters_guessed.append(letter)
             remaining_letters = get_available_letters(list_letters_guessed)
@@ -206,7 +207,11 @@ def hangman(secret_word):
                                                        secret_word, letter,
                                                        list_secret_word_dashes)
 
-            print("--------------------")
+        if user_wins(list_letters_guessed, secret_word):
+            print("Congratulations, you won!")
+            break
+
+            #print("--------------------")
 
 
 # When you've completed your hangman function, scroll down to the bottom
@@ -314,14 +319,14 @@ def letter_chosen_by_the_user(end_of_the_game,
 
     while not valid_letter and not end_of_the_game:
         letter_guessed = (input("Please guess a letter: "))
-        valid_letter, end_of_the_game, guesses = game_rules(warnings_left, guesses,
+        valid_letter, end_of_the_game, guesses, warnings_left = game_rules(warnings_left, guesses,
                                                    letter_guessed,
                                                    list_letters_guessed,
                                                    secret_word)
     
-  
+        print("--------------------")
 
-    return (end_of_the_game, letter_guessed, guesses)
+    return (end_of_the_game, letter_guessed, guesses, warnings_left)
 
 ################################################################################################################    
 
@@ -351,10 +356,10 @@ def game_rules(warnings_left, guesses,
         warnings_left, guesses = is_not_valid_letter(warnings_left, guesses, list_letters_guessed)
     else:
 
-        if letter_is_in_secret_word(letter_guessed, secret_word):
-            valid_letter = True
+        #if letter_is_in_secret_word(letter_guessed, secret_word):
+            #valid_letter = True
          
-        elif letter_guessed in list_letters_guessed: # if the letter has already been chosen
+        if letter_guessed in list_letters_guessed: # if the letter has already been chosen
             warnings_left, guesses = letter_has_already_been_chosen(warnings_left, guesses, list_letters_guessed)
 
 
@@ -363,9 +368,9 @@ def game_rules(warnings_left, guesses,
             valid_letter = True
     
     if guesses < 1: # end of the game
-        return (valid_letter, True, guesses)
+        return (valid_letter, True, guesses, warnings_left)
     else:
-        return (valid_letter, False, guesses)
+        return (valid_letter, False, guesses, warnings_left)
 
 
 #################################################################################################################
@@ -408,8 +413,10 @@ def if_the_letter_has_not_yet_been_chosen(letter, guesses, secret_word):
     Checks if the chosen letter is a vowel or consonant and decreases
     the choices accordingly.
     '''
+    if letter_is_in_secret_word(letter, secret_word):
+        return guesses
 
-    if is_consonant(letter) and not letter_is_in_secret_word(letter, secret_word):
+    elif is_consonant(letter) and not letter_is_in_secret_word(letter, secret_word):
         guesses -= 1
         return guesses
 
@@ -446,6 +453,19 @@ def letter_is_in_secret_word(letter, secret_word):
 
 #######################################################################################################
 
+def user_wins(list_letters_guessed, secret_word):
+    '''
+    verifies that the user has corrected all the letters of the secret word
+    '''
+
+    list_letters_secret_word = [letter for letter in secret_word]
+
+    if list_letters_guessed == list_letters_secret_word:
+        return True
+    else:
+        return False
+
+
 #is_word_guessed(secret_word, letters_chosen_by_the_user())
 
 #get_guessed_word(secret_word, letters_chosen_by_the_user())
@@ -461,3 +481,5 @@ hangman(secret_word)
 #secret_word_dashes(secret_word)
 #get_guessed_word(secret_word, "t",secret_word_dashes(secret_word)  )
 #print(is_consonant("a"))
+
+#print(user_wins(['s','u','c','e','s','s','o'], secret_word))
