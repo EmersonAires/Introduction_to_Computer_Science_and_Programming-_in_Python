@@ -104,12 +104,16 @@ def get_guessed_word(secret_word,
         letter_position += 1
     
     if some_guessed_letter:
-        print("Good guess:", ''.join(list_secret_word_dashes))
+        #print("Good guess:", ''.join(list_secret_word_dashes))
+        central_print('good_guess', secret_word, '', guesses,
+                      remaining_letters, list_secret_word_dashes)
  
         return list_secret_word_dashes
 
     else:
-        print("Oops! That letter is not in my word:", ''.join(list_secret_word_dashes))
+        #print("Oops! That letter is not in my word:", ''.join(list_secret_word_dashes))
+        central_print('not_my_word', secret_word, '', guesses,
+                      remaining_letters, list_secret_word_dashes)
 
         return list_secret_word_dashes
         
@@ -172,17 +176,18 @@ def hangman(secret_word):
 
     ########################################################################################
     #game presentation
-    print("Welcome to the game Hangman!")
-    print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
-    print("You have {} warnings left".format(warnings_left))
-    print("---------------------")
-
+    #print("Welcome to the game Hangman!")
+    #print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
+    #print("You have {} warnings left".format(warnings_left))
+    #print("---------------------")
+    central_print('presentation', secret_word, warnings_left, guesses,
+                  remaining_letters, list_secret_word_dashes)
     ########################################################################################
     
     while end_of_the_game != True:
            
-        print("You have {} guesses left".format(guesses))
-        print("Avaible letters:", remaining_letters)
+        #print("You have {} guesses left".format(guesses))
+        #print("Avaible letters:", remaining_letters)
 
         #user chooses a letter
         end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(
@@ -331,7 +336,7 @@ def letter_chosen_by_the_user(end_of_the_game,
                                                                            secret_word,
                                                                            remaining_letters, list_secret_word_dashes)
     
-        print("--------------------")
+       # print("--------------------")
 
     return (end_of_the_game, letter_guessed, guesses, warnings_left)
 
@@ -404,17 +409,21 @@ def is_not_valid_letter(warnings_left,
     if warnings_left >= 1:
         warnings_left -= 1
 
-        print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
-        print("You have {} guesses left.".format(guesses))
-        print("Available letters: {}".format(remaining_letters))
+        #print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        #print("You have {} guesses left.".format(guesses))
+        #print("Available letters: {}".format(remaining_letters))
+        central_print('not_valid_caracter_warnings_left', '', warnings_left, guesses,
+                      remaining_letters, list_secret_word_dashes)
         
         return (warnings_left, guesses)
     else:
         guesses -= 1
 
-        print("Oops! That is not a valid letter. You have not warnings left so you lose one guesses: {}".format(' '.join(list_secret_word_dashes)))
-        print("You have {} guesses left.".format(guesses))
-        print("Available letters: {}".format(remaining_letters))
+        #print("Oops! That is not a valid letter. You have not warnings left so you lose one guesses: {}".format(' '.join(list_secret_word_dashes)))
+        #print("You have {} guesses left.".format(guesses))
+        #print("Available letters: {}".format(remaining_letters))
+        central_print('not_valid_caracter_guesses', '', warnings_left, guesses,
+                      remaining_letters, list_secret_word_dashes)
 
         return (warnings_left, guesses)
 
@@ -432,18 +441,22 @@ def letter_has_already_been_chosen(warnings_left,
     if warnings_left >= 1:
         warnings_left -= 1
 
-        print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
-        print("You have {} guesses left.".format(guesses))
-        print("Available letters: {}".format(remaining_letters))
+        #print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        #print("You have {} guesses left.".format(guesses))
+        #print("Available letters: {}".format(remaining_letters))
+        central_print('already_guessed_warnings_left', '', warnings_left, guesses,
+                      remaining_letters, list_secret_word_dashes) 
 
         return (warnings_left, guesses)
 
     else:
         guesses -= 1
 
-        print("Oops! You've already guessed that letter. You have no warnings left so you lose one guess:{}".format(' '.join(list_secret_word_dashes)))
-        print("You have {} guesses left.".format(guesses))
-        print("Available letters: {}".format(remaining_letters))
+        #print("Oops! You've already guessed that letter. You have no warnings left so you lose one guess:{}".format(' '.join(list_secret_word_dashes)))
+        #print("You have {} guesses left.".format(guesses))
+        #print("Available letters: {}".format(remaining_letters))
+        central_print('already_guessed_guesses', '', warnings_left, guesses,
+                      remaining_letters, list_secret_word_dashes) 
 
         return (warnings_left, guesses)
 
@@ -501,6 +514,69 @@ def unique_letters(secret_word):
     '''
 
     return len(set(secret_word))
+
+###############################################################################################
+def central_print(print_case, secret_word, 
+                  warnings_left, guesses,
+                  remaining_letters, list_secret_word_dashes):
+    '''
+    imprime o fluxo do jogo
+    '''
+
+    if print_case == 'presentation': # case 1
+
+        print("Welcome to the game Hangman!")
+        print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
+        print("You have {} warnings left".format(warnings_left))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'good_guess': # case 2
+
+        print("Good guess:", ''.join(list_secret_word_dashes))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'not_my_word': # case 3
+
+        print("Oops! That letter is not in my word:", ''.join(list_secret_word_dashes))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'not_valid_caracter_warnings_left': # case 4
+
+        print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'not_valid_caracter_guesses': # case 5
+
+        print("Oops! That is not a valid letter. You have not warnings left so you lose one guesses: {}".format(' '.join(list_secret_word_dashes)))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'already_guessed_warnings_left': # case 6
+
+        print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+    elif print_case == 'already_guessed_guesses': # case 7
+  
+        print("Oops! You've already guessed that letter. You have no warnings left so you lose one guess:{}".format(' '.join(list_secret_word_dashes)))
+        print("---------------------")
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
+
+
+
 
 
 secret_word = "tact"
