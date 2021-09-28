@@ -1,5 +1,5 @@
 # Problem Set 2, hangman.py
-# Name: 
+# Name: Emerson Eduardo Aires Nunes
 # Collaborators:
 # Time spent:
 
@@ -76,8 +76,11 @@ def is_word_guessed(secret_word, list_letters_guessed):
 
 
 
-
-def get_guessed_word(secret_word, letter, list_secret_word_dashes):
+def get_guessed_word(secret_word,
+                     letter,
+                     list_secret_word_dashes,
+                     guesses,
+                     remaining_letters):
     '''
     secret_word: string, the word the user is guessing
     list_letters_guessed: list (of letters), which letters have been guessed so far
@@ -102,7 +105,7 @@ def get_guessed_word(secret_word, letter, list_secret_word_dashes):
     
     if some_guessed_letter:
         print("Good guess:", ''.join(list_secret_word_dashes))
-        
+ 
         return list_secret_word_dashes
 
     else:
@@ -110,9 +113,6 @@ def get_guessed_word(secret_word, letter, list_secret_word_dashes):
 
         return list_secret_word_dashes
         
-
-
-
 
 
 def get_available_letters(list_letters_guessed):
@@ -135,8 +135,6 @@ def get_available_letters(list_letters_guessed):
 
         
             
- 
-
 def hangman(secret_word):
     '''
     secret_word: string, the secret word to guess.
@@ -176,26 +174,27 @@ def hangman(secret_word):
     #game presentation
     print("Welcome to the game Hangman!")
     print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
+    print("You have {} warnings left".format(warnings_left))
     print("---------------------")
 
     ########################################################################################
     
     while end_of_the_game != True:
-       
-        
-        #print("You have {} warnings left".format(warnings_left))
+           
         print("You have {} guesses left".format(guesses))
         print("Avaible letters:", remaining_letters)
 
         #user chooses a letter
-        end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(end_of_the_game,
-                                                                     warnings_left,
-                                                                     guesses,
-                                                                     list_letters_guessed,
-                                                                     secret_word)
+        end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(
+                                                                                    end_of_the_game,
+                                                                                    warnings_left,
+                                                                                    guesses,
+                                                                                    list_letters_guessed,
+                                                                                    secret_word, remaining_letters, list_secret_word_dashes)
             
         if end_of_the_game:
-            print("End of the game")
+            print("Sorry, you ran out of guesses. The word was {}"
+                  .format(secret_word))
             break
 
         else:
@@ -205,13 +204,15 @@ def hangman(secret_word):
             #analyzes the letter chosen by the user
             list_secret_word_dashes = get_guessed_word(
                                                        secret_word, letter,
-                                                       list_secret_word_dashes)
+                                                       list_secret_word_dashes,
+                                                       guesses,
+                                                       remaining_letters)
 
-        if user_wins(list_letters_guessed, secret_word):
+        if is_word_guessed(secret_word, list_letters_guessed):
             print("Congratulations, you won!")
+            print("You total score for this game is: {}".format(guesses*unique_letters(secret_word)))
             break
 
-            #print("--------------------")
 
 
 # When you've completed your hangman function, scroll down to the bottom
@@ -310,8 +311,12 @@ if __name__ == "__main__":
 
 #################################################################################################################
 def letter_chosen_by_the_user(end_of_the_game,
-                              warnings_left, guesses,
-                              list_letters_guessed, secret_word):
+                              warnings_left,
+                              guesses,
+                              list_letters_guessed,
+                              secret_word,
+                              remaining_letters,
+                              list_secret_word_dashes):
     '''
     Returns the letters chosen by the user on each attempt
     '''
@@ -319,10 +324,12 @@ def letter_chosen_by_the_user(end_of_the_game,
 
     while not valid_letter and not end_of_the_game:
         letter_guessed = (input("Please guess a letter: "))
-        valid_letter, end_of_the_game, guesses, warnings_left = game_rules(warnings_left, guesses,
-                                                   letter_guessed,
-                                                   list_letters_guessed,
-                                                   secret_word)
+        valid_letter, end_of_the_game, guesses, warnings_left = game_rules(warnings_left,
+                                                                           guesses,
+                                                                           letter_guessed,
+                                                                           list_letters_guessed,
+                                                                           secret_word,
+                                                                           remaining_letters, list_secret_word_dashes)
     
         print("--------------------")
 
@@ -344,27 +351,38 @@ def secret_word_dashes(secret_word):
 
 #################################################################################################################
 
-def game_rules(warnings_left, guesses,
-               letter_guessed, list_letters_guessed,
-               secret_word):
+def game_rules(warnings_left,
+               guesses,
+               letter_guessed,
+               list_letters_guessed,
+               secret_word,
+               remaining_letters,
+               list_secret_word_dashes):
     '''
     Rules of the game
     '''
     valid_letter = False
     # check the chosen letter
     if str.isalpha(letter_guessed) != True: # if the letter is not a valid character
-        warnings_left, guesses = is_not_valid_letter(warnings_left, guesses, list_letters_guessed)
+        warnings_left, guesses = is_not_valid_letter(warnings_left, 
+                                                     guesses,
+                                                     remaining_letters,
+                                                     list_secret_word_dashes)
     else:
 
         #if letter_is_in_secret_word(letter_guessed, secret_word):
             #valid_letter = True
          
         if letter_guessed in list_letters_guessed: # if the letter has already been chosen
-            warnings_left, guesses = letter_has_already_been_chosen(warnings_left, guesses, list_letters_guessed)
+            warnings_left, guesses = letter_has_already_been_chosen(warnings_left,
+                                                                    guesses,
+                                                                    remaining_letters, list_secret_word_dashes)
 
 
         else: # if the letter has not yet been chosen
-            guesses = if_the_letter_has_not_yet_been_chosen(letter_guessed, guesses, secret_word)
+            guesses = if_the_letter_has_not_yet_been_chosen(letter_guessed, guesses,
+                                                            secret_word,
+                                                            )
             valid_letter = True
     
     if guesses < 1: # end of the game
@@ -375,23 +393,37 @@ def game_rules(warnings_left, guesses,
 
 #################################################################################################################
 
-def is_not_valid_letter(warnings_left, guesses, list_letters_guessed):
+def is_not_valid_letter(warnings_left,
+                        guesses,
+                        remaining_letters,
+                        list_secret_word_dashes):
     '''
     Return invalid letter message and update warnings_left or guesses variable value
     '''
 
     if warnings_left >= 1:
         warnings_left -= 1
-        print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, list_letters_guessed))
+
+        print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+        
         return (warnings_left, guesses)
     else:
-        print("Oops! That is not a valid letter. You have not warnings left")
         guesses -= 1
+
+        print("Oops! That is not a valid letter. You have not warnings left so you lose one guesses: {}".format(' '.join(list_secret_word_dashes)))
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
         return (warnings_left, guesses)
 
 
 #################################################################################################################
-def letter_has_already_been_chosen(warnings_left, guesses, list_letters_guessed):
+def letter_has_already_been_chosen(warnings_left,
+                                   guesses,
+                                   remaining_letters,
+                                   list_secret_word_dashes):
     '''
     returns error message letter already chosen and updates warnings_left 
     or guesses variable.
@@ -399,16 +431,25 @@ def letter_has_already_been_chosen(warnings_left, guesses, list_letters_guessed)
 
     if warnings_left >= 1:
         warnings_left -= 1
-        print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, list_letters_guessed))
+
+        print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
         return (warnings_left, guesses)
 
     else:
-        print("Oops! You've already guessed that letter")
         guesses -= 1
+
+        print("Oops! You've already guessed that letter. You have no warnings left so you lose one guess:{}".format(' '.join(list_secret_word_dashes)))
+        print("You have {} guesses left.".format(guesses))
+        print("Available letters: {}".format(remaining_letters))
+
         return (warnings_left, guesses)
 
 ###############################################################################################################
-def if_the_letter_has_not_yet_been_chosen(letter, guesses, secret_word):
+def if_the_letter_has_not_yet_been_chosen(letter, guesses,
+                                          secret_word):
     '''
     Checks if the chosen letter is a vowel or consonant and decreases
     the choices accordingly.
@@ -453,33 +494,14 @@ def letter_is_in_secret_word(letter, secret_word):
 
 #######################################################################################################
 
-def user_wins(list_letters_guessed, secret_word):
+def unique_letters(secret_word):
+
     '''
-    verifies that the user has corrected all the letters of the secret word
+    returns the number of unique letters of the secret word
     '''
 
-    list_letters_secret_word = [letter for letter in secret_word]
-
-    if list_letters_guessed == list_letters_secret_word:
-        return True
-    else:
-        return False
+    return len(set(secret_word))
 
 
-#is_word_guessed(secret_word, letters_chosen_by_the_user())
-
-#get_guessed_word(secret_word, letters_chosen_by_the_user())
-
-#get_available_letters(letters_chosen_by_the_user())
-
-#secret_word = choose_word(wordlist)
-
-secret_word = "sucesso"
+secret_word = "tact"
 hangman(secret_word)
-#get_guessed_word("teste", 'e')
-
-#secret_word_dashes(secret_word)
-#get_guessed_word(secret_word, "t",secret_word_dashes(secret_word)  )
-#print(is_consonant("a"))
-
-#print(user_wins(['s','u','c','e','s','s','o'], secret_word))
