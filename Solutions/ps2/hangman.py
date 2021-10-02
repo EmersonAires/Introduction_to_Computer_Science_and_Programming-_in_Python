@@ -1,19 +1,17 @@
 # Problem Set 2, hangman.py
 # Name: Emerson Eduardo Aires Nunes
 # Collaborators:
-# Time spent:
+# Time spent: 16 days
 
 # Hangman Game
 # -----------------------------------
-# Helper code
-# You don't need to understand this helper code,
-# but you will have to know how to use the functions
-# (so be sure to read the docstrings!)
+
 import random
 import string
 
 WORDLIST_FILENAME = "words.txt"
 
+#############################################################################################################################################
 
 def load_words():
     """
@@ -32,7 +30,7 @@ def load_words():
     print("  ", len(wordlist), "words loaded.")
     return wordlist
 
-
+#################################################################################################################################################
 
 def choose_word(wordlist):
     """
@@ -50,6 +48,7 @@ def choose_word(wordlist):
 # so that it can be accessed from anywhere in the program
 wordlist = load_words()
 
+####################################################################################################################################################
 
 def is_word_guessed(secret_word, list_letters_guessed):
     '''
@@ -74,7 +73,7 @@ def is_word_guessed(secret_word, list_letters_guessed):
     else:
         return False
 
-
+####################################################################################################################################################
 
 def get_guessed_word(secret_word,
                      letter,
@@ -115,7 +114,7 @@ def get_guessed_word(secret_word,
 
         return list_secret_word_dashes
         
-
+#####################################################################################################################################################
 
 def get_available_letters(list_letters_guessed):
     '''
@@ -135,7 +134,7 @@ def get_available_letters(list_letters_guessed):
     
     return available_letters
 
-        
+ #####################################################################################################################################################       
             
 def hangman(secret_word):
     '''
@@ -162,7 +161,7 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    ########################################################################################
+    #####################################################################################################################################################
     #variable assignment
     list_letters_guessed = []
     remaining_letters = string.ascii_lowercase
@@ -172,7 +171,7 @@ def hangman(secret_word):
     list_secret_word_dashes = secret_word_dashes(secret_word)
     warnings_left = 3
 
-    ########################################################################################
+    ####################################################################################################################################################
     #game presentation
     central_print('presentation', secret_word, warnings_left, guesses,
                   remaining_letters, list_secret_word_dashes)
@@ -209,14 +208,7 @@ def hangman(secret_word):
             break
 
 
-
-# When you've completed your hangman function, scroll down to the bottom
-# of the file and uncomment the first two lines to test
-#(hint: you might want to pick your own
-# secret_word while you're doing your own testing)
-
-# -----------------------------------
-
+########################################################################################################################################
 
 
 def match_with_gaps(my_word, other_word):
@@ -251,8 +243,7 @@ def match_with_gaps(my_word, other_word):
     
     return True
 
-
-
+#########################################################################################################################################
 
 def show_possible_matches(my_word):
     '''
@@ -264,10 +255,19 @@ def show_possible_matches(my_word):
              that has already been revealed.
 
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
 
+    list_possible_matches = []
 
+    for word in wordlist:
+        if match_with_gaps(my_word, word):
+            list_possible_matches.append(word)
+    
+    if len(list_possible_matches) != 0:
+        print(list_possible_matches)
+    else:
+        print("No matches found")
+
+##############################################################################################################################################
 
 def hangman_with_hints(secret_word):
     '''
@@ -296,36 +296,55 @@ def hangman_with_hints(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
-
-# When you've completed your hangman_with_hint function, comment the two similar
-# lines above that were used to run the hangman function, and then uncomment
-# these two lines and run this file to test!
-# Hint: You might want to pick your own secret_word while you're testing.
-
-'''
-if __name__ == "__main__":
-    # pass
-
-    # To test part 2, comment out the pass line above and
-    # uncomment the following two lines.
     
-    secret_word = choose_word(wordlist)
-    hangman(secret_word)
-'''
+    ##########################################################################################################################
+    #variable assignment
+    list_letters_guessed = []
+    remaining_letters = string.ascii_lowercase
+    guesses = 6
+    end_of_the_game = False
+    letter = ''
+    list_secret_word_dashes = secret_word_dashes(secret_word)
+    warnings_left = 3
 
-###############
+    ############################################################################################################################
+    #game presentation
+    central_print('presentation', secret_word, warnings_left, guesses,
+                  remaining_letters, list_secret_word_dashes)
+    #############################################################################################################################
     
-    # To test part 3 re-comment out the above lines and 
-    # uncomment the following two lines. 
-    
-    #secret_word = choose_word(wordlist)
-    #hangman_with_hints(secret_word)
+    while end_of_the_game != True:
+        #user chooses a letter
+        end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(
+                                                                                    end_of_the_game,
+                                                                                    warnings_left,
+                                                                                    guesses,
+                                                                                    list_letters_guessed,
+                                                                                    secret_word, remaining_letters, list_secret_word_dashes)
+            
+        if end_of_the_game:
+            print("Sorry, you ran out of guesses. The word was {}"
+                  .format(secret_word))
+            break
 
-#################################################################################################################
+        else:
+            list_letters_guessed.append(letter)
+            remaining_letters = get_available_letters(list_letters_guessed)
+
+            #analyzes the letter chosen by the user
+            list_secret_word_dashes = get_guessed_word(
+                                                       secret_word, letter,
+                                                       list_secret_word_dashes,
+                                                       guesses,
+                                                       remaining_letters)
+
+        if is_word_guessed(secret_word, list_letters_guessed):
+            print("Congratulations, you won!")
+            print("You total score for this game is: {}".format(guesses*unique_letters(secret_word)))
+            break    
+
+#####################################################################################################################################
+
 def letter_chosen_by_the_user(end_of_the_game,
                               warnings_left,
                               guesses,
@@ -337,15 +356,19 @@ def letter_chosen_by_the_user(end_of_the_game,
     Returns the letters chosen by the user on each attempt
     '''
     valid_letter = False
-
+    my_word = ''.join(list_secret_word_dashes)
     while not valid_letter and not end_of_the_game:
         letter_guessed = (input("Please guess a letter: "))
-        valid_letter, end_of_the_game, guesses, warnings_left = game_rules(warnings_left,
-                                                                           guesses,
-                                                                           letter_guessed,
-                                                                           list_letters_guessed,
-                                                                           secret_word,
-                                                                           remaining_letters, list_secret_word_dashes)
+
+        if letter_guessed == "*":
+            show_possible_matches(my_word)
+        else:
+            valid_letter, end_of_the_game, guesses, warnings_left = game_rules(warnings_left,
+                                                                            guesses,
+                                                                            letter_guessed,
+                                                                            list_letters_guessed,
+                                                                            secret_word,
+                                                                            remaining_letters, list_secret_word_dashes)
     
        # print("--------------------")
 
@@ -429,7 +452,7 @@ def is_not_valid_letter(warnings_left,
         return (warnings_left, guesses)
 
 
-#################################################################################################################
+###########################################################################################################################
 def letter_has_already_been_chosen(warnings_left,
                                    guesses,
                                    remaining_letters,
@@ -455,7 +478,7 @@ def letter_has_already_been_chosen(warnings_left,
 
         return (warnings_left, guesses)
 
-###############################################################################################################
+##########################################################################################################################
 def if_the_letter_has_not_yet_been_chosen(letter, guesses,
                                           secret_word):
     '''
@@ -473,7 +496,7 @@ def if_the_letter_has_not_yet_been_chosen(letter, guesses,
         guesses -= 2
         return guesses
     
-##############################################################################################################
+#############################################################################################################################
 
 def is_consonant(letter):
     '''
@@ -486,7 +509,7 @@ def is_consonant(letter):
     else:
       return False
 
-#######################################################################################################
+##############################################################################################################################
 
 def letter_is_in_secret_word(letter, secret_word):
     '''
@@ -498,7 +521,7 @@ def letter_is_in_secret_word(letter, secret_word):
     else:
         return False
 
-#######################################################################################################
+###############################################################################################################################
 
 def unique_letters(secret_word):
 
@@ -508,7 +531,7 @@ def unique_letters(secret_word):
 
     return len(set(secret_word))
 
-###############################################################################################
+################################################################################################################################
 def central_print(print_case, secret_word, 
                   warnings_left, guesses,
                   remaining_letters, list_secret_word_dashes):
@@ -567,13 +590,10 @@ def central_print(print_case, secret_word,
         print("You have {} guesses left.".format(guesses))
         print("Available letters: {}".format(remaining_letters))
 
-""" if __name__ == "__main__":
-    # pass
+#############################################################################################################################################################################
 
-    # To test part 2, comment out the pass line above and
-    # uncomment the following two lines.
-    
+if __name__ == "__main__":
+ 
     secret_word = choose_word(wordlist)
-    hangman(secret_word) """
-
-match_with_gaps("a_ ple", "apple")
+    hangman(secret_word)
+    #hangman_with_hints(secret_word)
