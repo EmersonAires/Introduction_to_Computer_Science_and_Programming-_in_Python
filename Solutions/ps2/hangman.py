@@ -104,14 +104,12 @@ def get_guessed_word(secret_word,
         letter_position += 1
     
     if some_guessed_letter:
-        #print("Good guess:", ''.join(list_secret_word_dashes))
         central_print('good_guess', secret_word, '', guesses,
                       remaining_letters, list_secret_word_dashes)
  
         return list_secret_word_dashes
 
     else:
-        #print("Oops! That letter is not in my word:", ''.join(list_secret_word_dashes))
         central_print('not_my_word', secret_word, '', guesses,
                       remaining_letters, list_secret_word_dashes)
 
@@ -176,19 +174,11 @@ def hangman(secret_word):
 
     ########################################################################################
     #game presentation
-    #print("Welcome to the game Hangman!")
-    #print("I am thinking of a word that is " + str(len(secret_word)) + " letters long.")
-    #print("You have {} warnings left".format(warnings_left))
-    #print("---------------------")
     central_print('presentation', secret_word, warnings_left, guesses,
                   remaining_letters, list_secret_word_dashes)
     ########################################################################################
     
     while end_of_the_game != True:
-           
-        #print("You have {} guesses left".format(guesses))
-        #print("Avaible letters:", remaining_letters)
-
         #user chooses a letter
         end_of_the_game, letter, guesses, warnings_left = letter_chosen_by_the_user(
                                                                                     end_of_the_game,
@@ -238,8 +228,29 @@ def match_with_gaps(my_word, other_word):
         _ , and my_word and other_word are of the same length;
         False otherwise: 
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    
+    list_position_letters = []
+    ascii_lower_case = string.ascii_lowercase
+    count = 0
+    my_word = my_word.replace(' ', '')
+
+    if len(my_word) != len(other_word):
+        return False
+
+    # storing the position of valid letters
+    for letter_my_word in my_word:
+        if letter_my_word in ascii_lower_case:
+            list_position_letters.append(count)
+        count += 1
+
+    # checking the letter combination
+    if len(list_position_letters) != 0:
+        for i in list_position_letters:
+            if my_word[i] != other_word[i]:
+                return False
+    
+    return True
+
 
 
 
@@ -374,15 +385,11 @@ def game_rules(warnings_left,
                                                      remaining_letters,
                                                      list_secret_word_dashes)
     else:
-
-        #if letter_is_in_secret_word(letter_guessed, secret_word):
-            #valid_letter = True
          
         if letter_guessed in list_letters_guessed: # if the letter has already been chosen
             warnings_left, guesses = letter_has_already_been_chosen(warnings_left,
                                                                     guesses,
                                                                     remaining_letters, list_secret_word_dashes)
-
 
         else: # if the letter has not yet been chosen
             guesses = if_the_letter_has_not_yet_been_chosen(letter_guessed, guesses,
@@ -409,9 +416,6 @@ def is_not_valid_letter(warnings_left,
     if warnings_left >= 1:
         warnings_left -= 1
 
-        #print("Oops! That is not a valid letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
-        #print("You have {} guesses left.".format(guesses))
-        #print("Available letters: {}".format(remaining_letters))
         central_print('not_valid_caracter_warnings_left', '', warnings_left, guesses,
                       remaining_letters, list_secret_word_dashes)
         
@@ -419,9 +423,6 @@ def is_not_valid_letter(warnings_left,
     else:
         guesses -= 1
 
-        #print("Oops! That is not a valid letter. You have not warnings left so you lose one guesses: {}".format(' '.join(list_secret_word_dashes)))
-        #print("You have {} guesses left.".format(guesses))
-        #print("Available letters: {}".format(remaining_letters))
         central_print('not_valid_caracter_guesses', '', warnings_left, guesses,
                       remaining_letters, list_secret_word_dashes)
 
@@ -441,9 +442,6 @@ def letter_has_already_been_chosen(warnings_left,
     if warnings_left >= 1:
         warnings_left -= 1
 
-        #print("Oops! You've already guessed that letter. You have {} warnings left: {}".format(warnings_left, ' '.join(list_secret_word_dashes)))
-        #print("You have {} guesses left.".format(guesses))
-        #print("Available letters: {}".format(remaining_letters))
         central_print('already_guessed_warnings_left', '', warnings_left, guesses,
                       remaining_letters, list_secret_word_dashes) 
 
@@ -452,9 +450,6 @@ def letter_has_already_been_chosen(warnings_left,
     else:
         guesses -= 1
 
-        #print("Oops! You've already guessed that letter. You have no warnings left so you lose one guess:{}".format(' '.join(list_secret_word_dashes)))
-        #print("You have {} guesses left.".format(guesses))
-        #print("Available letters: {}".format(remaining_letters))
         central_print('already_guessed_guesses', '', warnings_left, guesses,
                       remaining_letters, list_secret_word_dashes) 
 
@@ -478,9 +473,7 @@ def if_the_letter_has_not_yet_been_chosen(letter, guesses,
         guesses -= 2
         return guesses
     
-
 ##############################################################################################################
-
 
 def is_consonant(letter):
     '''
@@ -574,10 +567,13 @@ def central_print(print_case, secret_word,
         print("You have {} guesses left.".format(guesses))
         print("Available letters: {}".format(remaining_letters))
 
+""" if __name__ == "__main__":
+    # pass
 
+    # To test part 2, comment out the pass line above and
+    # uncomment the following two lines.
+    
+    secret_word = choose_word(wordlist)
+    hangman(secret_word) """
 
-
-
-
-secret_word = "tact"
-hangman(secret_word)
+match_with_gaps("a_ ple", "apple")
