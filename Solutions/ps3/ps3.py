@@ -92,7 +92,15 @@ def get_word_score(word, n):
     returns: int >= 0
     """
     
-    pass  # TO DO... Remove this line when you implement this function
+    first_component = sum_of_the_points_for_letters_in_the_word(word)
+    second_component = ((7 * len(word)) - 3 * (n - len(word)))
+
+    if second_component < 1:
+        second_component = 1
+    
+    return first_component * second_component
+
+    
 
 #
 # Make sure you understand how this function works and what it does!
@@ -341,8 +349,12 @@ def sum_of_the_points_for_letters_in_the_word(word):
     '''
     sum_of_the_points = 0
     word = word.lower()
-    for letter in word:
-        sum_of_the_points += SCRABBLE_LETTER_VALUES[letter]
+
+    try:
+        for letter in word:
+            sum_of_the_points += SCRABBLE_LETTER_VALUES[letter]
+    except KeyError:
+        pass 
                 
     return sum_of_the_points
 
@@ -360,3 +372,4 @@ def sum_of_the_points_for_letters_in_the_word(word):
     play_game(word_list) """
 
 sum_of_the_points_for_letters_in_the_word('weed')
+#get_word_score('weed', 7)

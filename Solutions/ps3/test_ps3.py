@@ -248,7 +248,7 @@ def test_wildcard(word_list):
         print("SUCCESS: test_wildcard()")
 
 
-def Test_sum_of_the_points_for_letters_in_the_word():
+def test_sum_of_the_points_for_letters_in_the_word():
     '''
     Unitest for sum_of_the_points_for_letters_in_the_word(word)
     '''
@@ -259,12 +259,12 @@ def Test_sum_of_the_points_for_letters_in_the_word():
         points = sum_of_the_points_for_letters_in_the_word(key)
 
         if points != words[key]:
-            Failure = True
+            print("FAILURE: test_sum_of_the_points_for_letters_in_the_word()")
+            print("\tExpected", words[key], "points but got '" + str(points) + "' for word '" + key + "'")
+            Failure = True 
 
-    if Failure:
-        print('Function:  sum_of_the_points_for_letters_in_the_word(word) -->  Test failure')
-    else:
-        print('Function:  sum_of_the_points_for_letters_in_the_word(word) --> Test Sucess')
+    if not Failure:
+        print("SUCCESSS: sum_of_the_points_for_letters_in_the_word()")
 
 
 
@@ -286,5 +286,5 @@ print("Testing wildcards...")
 test_wildcard(word_list)
 print("----------------------------------------------------------------------")
 print("Testing sum_of_the_points_for_letters_in_the_word...")
-Test_sum_of_the_points_for_letters_in_the_word()
+test_sum_of_the_points_for_letters_in_the_word()
 print("All done!")
