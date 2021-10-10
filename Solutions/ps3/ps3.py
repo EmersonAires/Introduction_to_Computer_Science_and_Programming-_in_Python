@@ -176,7 +176,20 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    update_hand = hand.copy()
+    freq_letter_in_the_word = get_frequency_dict(word.lower())
+
+    for key in update_hand.keys():
+        if key in freq_letter_in_the_word.keys():
+            update_hand[key] = (update_hand[key] - freq_letter_in_the_word[key])
+    
+    for key in update_hand.keys():
+        if update_hand[key] < 0:
+            update_hand[key] = 0
+    
+    return update_hand
+
+
 
 #
 # Problem #3: Test word validity
@@ -371,5 +384,11 @@ def sum_of_the_points_for_letters_in_the_word(word):
     word_list = load_words()
     play_game(word_list) """
 
-sum_of_the_points_for_letters_in_the_word('weed')
+#sum_of_the_points_for_letters_in_the_word('weed')
 #get_word_score('weed', 7)
+
+#hand = {'a':1, 'q': 1, 'l':2, 'm':1, 'u':1, 'i':1}
+#hand = {'e':1, 'v':2, 'n':1, 'i':1, 'l':2}
+#word = 'evil'
+
+#update_hand(hand, word)
