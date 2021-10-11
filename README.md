@@ -1,4 +1,4 @@
-# MIT - Introduction to Computer Science and Programming in Python
+# 6.0001 - Introduction to Computer Science and Programming in Python - MIT 
 
 <p align="center">
  <img src="mit.jpg" alt="MIT" height="500" width="500"/>
@@ -6,6 +6,17 @@
 
 <h2>Description</h2>
 <a href="https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/index.htm">6.0001 Introduction to Computer Science and Programming in Python</a> is intended for students with little or no programming experience. It aims to provide students with an understanding of the role computation can play in solving problems and to help students, regardless of their major, feel justifiably confident of their ability to write small programs that allow them to accomplish useful goals.
+
+<h2> Problem sets <h2/>
+
+| # | My Solution | Status |
+| - | ----------- | ------ |
+| 1 | [Problem 01](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps1) | ✔️
+| 2 | [Problem 02](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps2) | ✔️
+| 3 | [Problem 03](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps3) | ⏳
+| 4 | [Problem 04]() |
+| 5 | [Problem 05]() |
+| 6 | [Problem 06]() |
 
 <h2> Youtube Class List</h2>
 
