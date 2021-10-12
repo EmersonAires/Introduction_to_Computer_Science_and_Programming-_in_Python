@@ -205,8 +205,28 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    word = word.lower()
+    freq_word = get_frequency_dict(word)
+    hand_copy = hand.copy()
+    valid_word = True
 
-    pass  # TO DO... Remove this line when you implement this function
+    if word not in word_list:
+        valid_word = False
+    
+    # check that all letters of the word are part of the hand 
+    for key in freq_word.keys():
+        if key not in hand.keys():
+            valid_word = False
+        else:
+            hand_copy[key] = (hand[key] - freq_word[key])
+    # check if the number of letters in the word is greater than in the hand
+    for key in hand_copy.keys():
+        if hand_copy[key] < 0:
+            valid_word = False
+        
+    
+    return valid_word
+
 
 #
 # Problem #5: Playing a hand
@@ -388,7 +408,10 @@ def sum_of_the_points_for_letters_in_the_word(word):
 #get_word_score('weed', 7)
 
 #hand = {'a':1, 'q': 1, 'l':2, 'm':1, 'u':1, 'i':1}
-#hand = {'e':1, 'v':2, 'n':1, 'i':1, 'l':2}
+hand = {'b':1, 'a':3, 'n':2}
 #word = 'evil'
 
 #update_hand(hand, word)
+#word_list = ["banana", "maça", "uva", "laranja"]
+#word = 'banana'
+#is_valid_word(word, hand, word_list)
