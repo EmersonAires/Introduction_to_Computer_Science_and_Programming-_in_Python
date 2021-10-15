@@ -142,11 +142,13 @@ def deal_hand(n):
     """
     
     hand={}
-    num_vowels = int(math.ceil(n / 3))
+    num_vowels = int(math.ceil((n / 3)))
 
-    for i in range(num_vowels):
+    for i in range(num_vowels - 1):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
+    
+    hand['*'] = 1
     
     for i in range(num_vowels, n):    
         x = random.choice(CONSONANTS)
@@ -210,19 +212,28 @@ def is_valid_word(word, hand, word_list):
     hand_copy = hand.copy()
     valid_word = True
 
-    if word not in word_list:
-        valid_word = False
-    
-    # check that all letters of the word are part of the hand 
-    for key in freq_word.keys():
-        if key not in hand.keys():
+    # if the wildcard character is in the word
+    if word.find("*") != -1:
+        """ find = False
+        pos_wildcard = word.find('*')
+        word_covert_for_list = [x in for letter in word]
+        for vowel in VOWELS:
+            word_covert_for_list[pos_wildcard] = vowel
+            possible_word = ''.join(word_covert_for_list)
+            if possible_word in word_list:
+                find = True  """
+   
+
+
+    else:
+
+        if word not in word_list:
             valid_word = False
-        else:
-            hand_copy[key] = (hand[key] - freq_word[key])
-    # check if the number of letters in the word is greater than in the hand
-    for key in hand_copy.keys():
-        if hand_copy[key] < 0:
-            valid_word = False
+            return valid_word
+        
+        valid_word = check_letters_in_the_word(freq_word,
+                                               hand_copy,
+                                               valid_word)
         
     
     return valid_word
@@ -392,6 +403,43 @@ def sum_of_the_points_for_letters_in_the_word(word):
     return sum_of_the_points
 
 
+def check_letters_in_the_word(freq_word, hand_copy, valid_word):
+    '''
+    checks if all letters of the word are part of the hand and the amount.
+    '''
+    
+    # check that all letters of the word are part of the hand 
+    for key in freq_word.keys():
+        if key not in hand_copy.keys():
+            valid_word = False
+            return valid_word
+        else:
+            hand_copy[key] = (hand_copy[key] - freq_word[key])
+
+    # check if the number of letters in the word is greater than in the hand
+    for key in hand_copy.keys():
+        if hand_copy[key] < 0:
+            valid_word = False
+            return valid_word
+
+
+    return valid_word
+
+def possible_words_using_wildcard(word):
+    '''
+    returns a list of possible words formed using the wildcard
+    '''
+    list_letters_in_word = list(word)
+    positon_wildcard = word.find("*")
+    list_possible_words = []
+
+    for wowel in VOWELS:
+        list_letters_in_word[positon_wildcard] = wowel
+        combined_word_= ''.join(list_letters_in_word)
+        list_possible_words.append(combined_word_)
+    
+    return list_possible_words
+
 
 
 
@@ -415,3 +463,9 @@ hand = {'b':1, 'a':3, 'n':2}
 #word_list = ["banana", "maça", "uva", "laranja"]
 #word = 'banana'
 #is_valid_word(word, hand, word_list)
+
+
+
+#deal_hand(7)
+
+possible_words_using_wildcard("t*ste")
