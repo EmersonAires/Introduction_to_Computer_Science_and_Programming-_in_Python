@@ -440,6 +440,22 @@ def possible_words_using_wildcard(word):
     
     return list_possible_words
 
+def check_list_of_word_combinations(list_possible_words):
+    '''
+    check if there is a valid word in the received list.
+
+    return: Bolean
+    '''
+    
+    word_list = load_words()
+    valid_word = False
+    for word in list_possible_words:
+        if word in word_list:
+            valid_word = True
+            return valid_word
+    
+    return valid_word
+
 
 
 
@@ -468,4 +484,4 @@ hand = {'b':1, 'a':3, 'n':2}
 
 #deal_hand(7)
 
-possible_words_using_wildcard("t*ste")
+check_list_of_word_combinations(possible_words_using_wildcard("ev*l"))
