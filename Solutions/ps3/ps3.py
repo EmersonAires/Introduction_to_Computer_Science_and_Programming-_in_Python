@@ -214,16 +214,16 @@ def is_valid_word(word, hand, word_list):
 
     # if the wildcard character is in the word
     if word.find("*") != -1:
-        """ find = False
-        pos_wildcard = word.find('*')
-        word_covert_for_list = [x in for letter in word]
-        for vowel in VOWELS:
-            word_covert_for_list[pos_wildcard] = vowel
-            possible_word = ''.join(word_covert_for_list)
-            if possible_word in word_list:
-                find = True  """
-   
+        if check_list_of_word_combinations(possible_words_using_wildcard(word)):
 
+            valid_word = check_letters_in_the_word(freq_word,
+                                                   hand_copy,
+                                                   valid_word)
+            return valid_word
+
+        else: # not this valid word list
+            valid_word = False
+            return valid_word
 
     else:
 
@@ -234,8 +234,7 @@ def is_valid_word(word, hand, word_list):
         valid_word = check_letters_in_the_word(freq_word,
                                                hand_copy,
                                                valid_word)
-        
-    
+          
     return valid_word
 
 
@@ -396,10 +395,15 @@ def sum_of_the_points_for_letters_in_the_word(word):
 
     try:
         for letter in word:
-            sum_of_the_points += SCRABBLE_LETTER_VALUES[letter]
+            sum_of_the_points += SCRABBLE_LETTER_VALUES.get(letter, 0)
     except KeyError:
         pass 
-                
+
+    """  # add 1 point for the wildcard
+    if word.find("*") != -1:
+        sum_of_the_points += 1  
+    """
+
     return sum_of_the_points
 
 
@@ -440,6 +444,7 @@ def possible_words_using_wildcard(word):
     
     return list_possible_words
 
+
 def check_list_of_word_combinations(list_possible_words):
     '''
     check if there is a valid word in the received list.
@@ -447,7 +452,7 @@ def check_list_of_word_combinations(list_possible_words):
     return: Bolean
     '''
     
-    word_list = load_words()
+    
     valid_word = False
     for word in list_possible_words:
         if word in word_list:
@@ -468,8 +473,10 @@ def check_list_of_word_combinations(list_possible_words):
     word_list = load_words()
     play_game(word_list) """
 
+word_list = load_words()
+
 #sum_of_the_points_for_letters_in_the_word('weed')
-#get_word_score('weed', 7)
+#get_word_score('h*ney', 7)
 
 #hand = {'a':1, 'q': 1, 'l':2, 'm':1, 'u':1, 'i':1}
 hand = {'b':1, 'a':3, 'n':2}
@@ -484,4 +491,4 @@ hand = {'b':1, 'a':3, 'n':2}
 
 #deal_hand(7)
 
-check_list_of_word_combinations(possible_words_using_wildcard("ev*l"))
+#check_list_of_word_combinations(possible_words_using_wildcard("ev*l"))
