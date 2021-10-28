@@ -13,8 +13,8 @@
 | - | ----------- | ------ |
 | 1 | [Problem 01](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps1) | ✔️
 | 2 | [Problem 02](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps2) | ✔️
-| 3 | [Problem 03](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps3) | ⏳
-| 4 | [Problem 04]() |
+| 3 | [Problem 03](https://github.com/EmersonAires/Introduction_to_Computer_Science_and_Programming-_in_Python/tree/main/Solutions/ps3) | ✔️
+| 4 | [Problem 04]() | ⏳
 | 5 | [Problem 05]() |
 | 6 | [Problem 06]() |
 
