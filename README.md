@@ -31,7 +31,7 @@
 | 7 |  [Testing, Debugging, Exceptions, and Assertions](https://youtu.be/9H6muyZjms0?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) |✔️|
 | 8 |  [Object Oriented Programming](https://youtu.be/-DP1i2ZU9gk?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) |✔️|
 | 9 |  [ Python Classes and Inheritance](https://youtu.be/FlGjISF3l78?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) |✔️|
-| 10 | [Understanding Program Efficiency, Part 1](https://youtu.be/o9nW0uBqvEo?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) | |
+| 10 | [Understanding Program Efficiency, Part 1](https://youtu.be/o9nW0uBqvEo?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) |✔️ |
 | 11 | [Understanding Program Efficiency, Part 2](https://youtu.be/7lQXYl_L28w?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) | |
 | 12 | [Searching and Sorting](https://youtu.be/6LOwPhPDwVc?list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA) | |
 
