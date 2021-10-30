@@ -25,9 +25,7 @@ def get_permutations(sequence):
 
     # case base
     if len(sequence) == 1:
-        list_sequence = []
-        list_sequence.append(sequence[0])
-        return list_sequence
+        return list(sequence)
 
     else:
         # reduce the string
@@ -44,12 +42,10 @@ def get_permutations(sequence):
             position_string = 0
             position_first_character = 0
             list_character = []
-            #number_of_elements = (len(permutation_list[0]) + 1) * len(permutation_list)
             number_of_elements_new_per_element = (len(permutation_list[0]) + 1) 
 
             # new permutations formed by each string in the permutation_list list
             while number_of_elements_new_per_element > 0:
-
                 # formation of each new string
                 for i in range(element_length):
                     if i == position_first_character:
