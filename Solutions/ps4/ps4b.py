@@ -70,7 +70,8 @@ class Message(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME)
 
     def get_message_text(self):
         '''
@@ -78,7 +79,7 @@ class Message(object):
         
         Returns: self.message_text
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text
 
     def get_valid_words(self):
         '''
@@ -87,7 +88,9 @@ class Message(object):
         
         Returns: a COPY of self.valid_words
         '''
-        pass #delete this line and replace with your code here
+        copy_valid_words = self.valid_words[:]
+
+        return copy_valid_words
 
     def build_shift_dict(self, shift):
         '''
@@ -103,7 +106,29 @@ class Message(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        pass #delete this line and replace with your code here
+        assert shift >= 0 and shift < 26, 'shift must be in the following range: 0 <= shift < 26'
+
+        alphabet = string.ascii_uppercase + string.ascii_lowercase
+
+        dic_alphabet = {}
+        dic_alphabet_encrypted = {}
+        key = 0
+
+        for letter in alphabet:
+            dic_alphabet[key] = letter
+            key += 1
+        
+        i = 0
+        for letter in alphabet:
+            key = (i + shift) - (26 * ((i + shift) // 26))
+            if letter.isupper():
+                dic_alphabet_encrypted[letter] = dic_alphabet[key].upper()
+                i += 1
+            else:
+                dic_alphabet_encrypted[letter] = dic_alphabet[key].lower()
+                i += 1
+        
+        return dic_alphabet_encrypted
 
     def apply_shift(self, shift):
         '''
@@ -222,3 +247,11 @@ if __name__ == '__main__':
     #TODO: best shift value and unencrypted story 
     
     pass #delete this line and replace with your code here
+
+
+
+
+obj_message = Message('texto')
+#print(obj_message.get_valid_words())
+
+print(obj_message.build_shift_dict(1))
