@@ -1,5 +1,5 @@
 # Problem Set 4B
-# Name: <your name here>
+# Name: Emerson Eduardo Aires Nunes
 # Collaborators:
 # Time Spent: x:xx
 
@@ -142,8 +142,22 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        assert shift >= 0 and shift < 26, 'shift must be in the following range: 0 <= shift < 26'
 
+        text = self.get_message_text()
+
+        dic_alphabet_encrypted = self.build_shift_dict(shift)
+
+        text_shifted = ''
+
+        for caracter in text:
+            try:
+                text_shifted += dic_alphabet_encrypted[caracter]
+            except:
+                text_shifted += caracter
+        
+        return text_shifted
+        
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
         '''
@@ -160,7 +174,11 @@ class PlaintextMessage(Message):
             self.message_text_encrypted (string, created using shift)
 
         '''
-        pass #delete this line and replace with your code here
+        Message.__init__(self, message_text)
+        self.valid_words = load_words(WORDLIST_FILENAME)
+        self.shift = shift
+        self.encryption_dict = self.build_shift_dict(shift)
+        self.message_text_encrypted = self.apply_shift(shift)
 
     def get_shift(self):
         '''
@@ -168,7 +186,7 @@ class PlaintextMessage(Message):
         
         Returns: self.shift
         '''
-        pass #delete this line and replace with your code here
+        return self.shift
 
     def get_encryption_dict(self):
         '''
@@ -176,7 +194,9 @@ class PlaintextMessage(Message):
         
         Returns: a COPY of self.encryption_dict
         '''
-        pass #delete this line and replace with your code here
+        copy_encryption_dict = self.encryption_dict.copy()
+
+        return copy_encryption_dict
 
     def get_message_text_encrypted(self):
         '''
@@ -184,7 +204,7 @@ class PlaintextMessage(Message):
         
         Returns: self.message_text_encrypted
         '''
-        pass #delete this line and replace with your code here
+        return self.message_text_encrypted
 
     def change_shift(self, shift):
         '''
@@ -196,7 +216,11 @@ class PlaintextMessage(Message):
 
         Returns: nothing
         '''
-        pass #delete this line and replace with your code here
+        assert shift >= 0 and shift < 26, 'shift must be in the following range: 0 <= shift < 26'
+
+        self.shift = shift
+        self.encryption_dict = self.build_shift_dict(shift)
+        self.message_text_encrypted = self.apply_shift(shift)
 
 
 class CiphertextMessage(Message):
@@ -255,3 +279,5 @@ obj_message = Message('texto')
 #print(obj_message.get_valid_words())
 
 print(obj_message.build_shift_dict(1))
+
+print(obj_message.apply_shift(1))
