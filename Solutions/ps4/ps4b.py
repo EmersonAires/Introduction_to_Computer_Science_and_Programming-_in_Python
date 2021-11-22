@@ -58,6 +58,7 @@ def get_story_string():
 ### END HELPER CODE ###
 
 WORDLIST_FILENAME = 'words.txt'
+VALID_WORDS = load_words(WORDLIST_FILENAME)
 
 class Message(object):
     def __init__(self, text):
@@ -71,7 +72,7 @@ class Message(object):
             self.valid_words (list, determined using helper function load_words)
         '''
         self.message_text = text
-        self.valid_words = load_words(WORDLIST_FILENAME)
+        self.valid_words = VALID_WORDS
 
     def get_message_text(self):
         '''
@@ -174,8 +175,9 @@ class PlaintextMessage(Message):
             self.message_text_encrypted (string, created using shift)
 
         '''
-        Message.__init__(self, message_text)
-        self.valid_words = load_words(WORDLIST_FILENAME)
+        #Message.__init__(self, message_text)
+        self.message_text = text
+        self.valid_words = VALID_WORDS
         self.shift = shift
         self.encryption_dict = self.build_shift_dict(shift)
         self.message_text_encrypted = self.apply_shift(shift)
@@ -234,7 +236,8 @@ class CiphertextMessage(Message):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text = text
+        self.valid_words = VALID_WORDS
 
     def decrypt_message(self):
         '''
@@ -252,32 +255,59 @@ class CiphertextMessage(Message):
         Returns: a tuple of the best shift value used to decrypt the message
         and the decrypted message text using that shift value
         '''
-        pass #delete this line and replace with your code here
+        count_shift = 0
+        best_qtd_valid_words = 0
+        dic_shift = {}
+
+        while count_shift <= 25:
+            shift_message = self.apply_shift(count_shift)
+            qtd_valid_words = number_of_valid_words(shift_message)
+
+            dic_shift[count_shift] = (qtd_valid_words, shift_message)
+
+            count_shift += 1
+
+        for key in dic_shift.keys():
+            if dic_shift[key][0] > best_qtd_valid_words:
+                best_qtd_valid_words = dic_shift[key][0]
+                best_shift = key
+        
+        return (best_shift, dic_shift[best_shift][1])
+
+
+def number_of_valid_words(shift_message):
+    '''
+    check the number of valid words in a message
+    '''
+
+    word_list = shift_message.split(' ')
+    valid_words_count = 0
+
+    for word in word_list:
+        if is_word(VALID_WORDS, word):
+            valid_words_count += 1
+    
+    return valid_words_count
+
 
 if __name__ == '__main__':
 
-#    #Example test case (PlaintextMessage)
-#    plaintext = PlaintextMessage('hello', 2)
-#    print('Expected Output: jgnnq')
-#    print('Actual Output:', plaintext.get_message_text_encrypted())
-#
-#    #Example test case (CiphertextMessage)
-#    ciphertext = CiphertextMessage('jgnnq')
-#    print('Expected Output:', (24, 'hello'))
-#    print('Actual Output:', ciphertext.decrypt_message())
+    print('-------------------------------------------------')
+
+    #Example test case (PlaintextMessage)
+    plaintext = PlaintextMessage('hello', 2)
+    print('Expected Output: jgnnq')
+    print('Actual Output:', plaintext.get_message_text_encrypted())
+
+    print('-------------------------------------------------')
+
+    #Example test case (CiphertextMessage)
+    ciphertext = CiphertextMessage('jgnnq')
+    print('Expected Output:', (24, 'hello'))
+    print('Actual Output:', ciphertext.decrypt_message())
+
+    print('-------------------------------------------------') 
 
     #TODO: WRITE YOUR TEST CASES HERE
 
     #TODO: best shift value and unencrypted story 
-    
-    pass #delete this line and replace with your code here
-
-
-
-
-obj_message = Message('texto')
-#print(obj_message.get_valid_words())
-
-print(obj_message.build_shift_dict(1))
-
-print(obj_message.apply_shift(1))
